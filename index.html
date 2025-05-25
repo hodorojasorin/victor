@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La multi ani Victoras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: white;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url(cristi.jpg);
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .quiz-section {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .quiz-section.hidden {
+            display: none;
+        }
+
+        .birthday-gallery {
+            display: none;
+            padding: 50px 20px;
+        }
+
+        .birthday-gallery.active {
+            display: block;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-20px);
+            }
+
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transform: scale(0.9);
+            animation: cardPop 0.8s ease-out forwards;
+        }
+
+        @keyframes cardPop {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .question {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .answers {
+            display: grid;
+            gap: 15px;
+        }
+
+        .answer-btn {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(45deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            animation: correctPulse 0.6s ease;
+        }
+
+        .answer-btn.wrong {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            animation: wrongShake 0.6s ease;
+        }
+
+        @keyframes correctPulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes wrongShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+
+        .gallery-title {
+            font-size: 3rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.5);
+            }
+
+            to {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .photo-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: photoFloat 3s ease-in-out infinite;
+        }
+
+        .photo-card:nth-child(even) {
+            animation-delay: 1.5s;
+        }
+
+        @keyframes photoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .photo-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-placeholder::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .photo-caption {
+            font-size: 1.1rem;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confettiFall 3s linear infinite;
+            z-index: 1000;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .birthday-message {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px auto;
+            max-width: 600px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .birthday-message h2 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .birthday-message p {
+            color: #666;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .score-display {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-display h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .score-number {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .trei {
+            object-fit: contain;
+            padding-top: 70px;
+        }
+
+        .patru {
+            object-fit: contain;
+            padding-top: 150px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- selectam tipa -->
+        <div class="quiz-section" id="quizSection">
+            <h1 class="main-title">La mulți ani! Victoraș</h1>
+            <h2>Răspunde la întrebări pentru a te cunoaște mai bine</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="questionContainer"></div>
+        </div>
+
+        <!-- pozici -->
+        <div class="birthday-gallery" id="gallerySection">
+            <h1 class="gallery-title">Galeria Amintirilor :*</h1>
+
+            <div class="birthday-message">
+                <h2>La mulți ani, Victor! gamerul nostru favorit</h2>
+                <p>Astăzi împlinești 19 ani! (cam batran). Echipa zurli din aceasta sala iti doreste multa sanatate, fericire, bani (rubla, dolar, euro, galote de aur) si cum se zice la anul si la multi ani! </p>
+            </div>
+
+            <div class="score-display" id="finalScore"></div>
+
+            <div class="photo-grid">
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img class="unu" src="zi catalin.jpeg" alt="catalin">
+                    </div>
+                    <div class="photo-caption">victor flămând</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img class="doi" src="dana.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor cu dana</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img class="trei" src="hapi.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor fericit</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img class="patru" src="totuna.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor ii e totuna</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img src="IMG_3750.jpg" alt="">
+                    </div>
+                    <div class="photo-caption">victor fugarit de politie</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img src="IMG_3751.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor cu bratu</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img src="IMG_3751.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor cu bratu</div>
+                </div>
+
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img src="IMG_3751.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor cu bratu</div>
+                </div>
+                
+                <div class="photo-card">
+                    <div class="photo-placeholder">
+                        <img src="IMG_3751.JPG" alt="">
+                    </div>
+                    <div class="photo-caption">victor cu bratu</div>
+                </div>
+            </div>
+            <button><a href="#">Apasa Aici</a></button>
+        </div>
+    </div>
+
+    <script>
+        // victoras raspunde
+        const questions = [
+            {
+                question: "Ce îți place cel mai mult să joci?",
+                answers: ["FIFA", "CS:GO", "Minecraft", "Fortnite"],
+                correct: 1
+            },
+            {
+                question: "Care este prietenul tău cel mai bun?",
+                answers: ["Laptopul cu CS:GO pe fundal", "Ion", "Nichita", "Palanciaizăr"],
+                correct: 0
+            },
+            {
+                question: "Ce îți place să faci în timpul liber?",
+                answers: ["Să mă uit la futboool", "Să joc CS:GO", "Să urmăresc filme", "Să merg la sală"],
+                correct: 1
+            },
+            {
+                question: "Care este hobby-ul tău favorit?",
+                answers: ["Mâncarea", "CS:GO", "Dormitul", "Dormitul x2"],
+                correct: 1
+            },
+            {
+                question: "Care este numele tău?",
+                answers: ["Victor", "CS:GO Master", "Meow", "CS:GO Zi și noapte"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        function displayQuestion() {
+            if (currentQuestion >= questions.length) {
+                showGallery();
+                return;
+            }
+
+            const questionData = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+
+            container.innerHTML = `
+                <div class="question-card">
+                    <div class="question">${questionData.question}</div>
+                    <div class="answers">
+                        ${questionData.answers.map((answer, index) =>
+                `<button class="answer-btn" onclick="selectAnswer(${index})">${answer}</button>`
+            ).join('')}
+                    </div>
+                </div>
+            `;
+
+            // incarca bara
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            answered = false;
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answered) return;
+            answered = true;
+
+            const questionData = questions[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+
+            buttons.forEach((btn, index) => {
+                if (index === questionData.correct) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && index !== questionData.correct) {
+                    btn.classList.add('wrong');
+                }
+                btn.disabled = true;
+            });
+
+            if (selectedIndex === questionData.correct) {
+                score++;
+                createConfetti();
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                displayQuestion();
+            }, 2000);
+        }
+
+        function showGallery() {
+            document.getElementById('quizSection').classList.add('hidden');
+            document.getElementById('gallerySection').classList.add('active');
+
+            // arata scorul amu
+            const scorePercentage = Math.round((score / questions.length) * 100);
+            document.getElementById('finalScore').innerHTML = `
+                <h3>Scorul tău:</h3>
+                <div class="score-number">${score}/${questions.length}</div>
+                <p>${scorePercentage}% - ${scorePercentage >= 70 ? 'Excelent!' : scorePercentage >= 50 ? 'Foarte bine!' : 'Bună încercare!'}</p>
+            `;
+
+            createConfetti();
+        }
+
+        // dai foiala
+        displayQuestion();
+
+        // tipa animatii cesna
+        function createFloatingElements() {
+            const symbols = ['🎈', '🎉', '🎂', '🎁', '⭐', '🌟', '💫', '🎊'];
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const element = document.createElement('div');
+                    element.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                    element.style.position = 'fixed';
+                    element.style.left = Math.random() * 100 + '%';
+                    element.style.top = '100vh';
+                    element.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    element.style.zIndex = '999';
+                    element.style.pointerEvents = 'none';
+                    element.style.animation = `confettiFall ${Math.random() * 8 + 5}s linear infinite`;
+                    document.body.appendChild(element);
+
+                    setTimeout(() => {
+                        element.remove();
+                    }, 15000);
+                }, i * 2000);
+            }
+        }
+
+        // incarcate sukaaaa
+        createFloatingElements();
+        setInterval(createFloatingElements, 10000);
+    </script>
+</body>
+
+</html>
